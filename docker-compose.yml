@@ -10,7 +10,18 @@ services:
     networks:
       - dcs-bank
     volumes:
-      - ./docker-education-repo-service/appsetting.json:/publish/appsettings.json
+      - ./docker-education-repo-service/appsettings.json:/publish/appsettings.json
+
+  api-gateway-service:
+    image: nickholas/dcs-api-gateway:latest
+    networks:
+      - dcs-bank
+    depends_on:
+      - docker-education-repo
+    ports:
+      - "2100:2100"
+    volumes:
+      - ./api-gateway-service/appsettings.json:/app/appsettings.json
 
   decision-maker-service:
     image: nickholas/dcs-decision-maker-service:latest
@@ -18,6 +29,13 @@ services:
       - dcs-bank
     volumes:
       - ./decision-maker-service/appsettings.json:/app/appsettings.json
+
+  emailing-service:
+    image: nickholas/dcs-emailing-service:latest
+    networks:
+      - dcs-bank
+    volumes:
+      - ./emailing-service/appsettings.json:/app/appsettings.json
 
 networks:
   dcs-bank:

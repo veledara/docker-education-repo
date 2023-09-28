@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  docker-education-repo:
+    build:
+      context: ./docker-education-repo
+      dockerfile: Dockerfile
+    ports:
+      - "2023:80"
+    networks:
+      - dcs-bank
+    volumes:
+      - ./docker-education-repo-service/appsetting.json:/publish/appsettings.json
+
+  decision-maker-service:
+    image: nickholas/dcs-decision-maker-service:latest
+    networks:
+      - dcs-bank
+    volumes:
+      - ./decision-maker-service/appsettings.json:/app/appsettings.json
+
+networks:
+  dcs-bank:
+    driver: bridge
